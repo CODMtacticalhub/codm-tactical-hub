@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>CODM Tactical Hub</title>
+<style>
+:root{--bg:#090909;--panel:#151515;--panel2:#202020;--red:#ff3434;--text:#f5f5f5;--muted:#999;--border:#303030}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;padding-bottom:90px}
+header{background:#101010;border-bottom:1px solid var(--border);padding:17px;position:sticky;top:0;z-index:10}
+.logo{font-size:19px;font-weight:900;letter-spacing:1px}.logo span{color:var(--red)}
+main{max-width:800px;margin:auto;padding:16px}
+.hero{padding:24px 20px;border-radius:18px;background:linear-gradient(120deg,#351313,#151515 75%);border:1px solid #542222;margin-bottom:20px}
+.hero small{color:var(--red);font-weight:bold;letter-spacing:2px}
+.hero h1{font-size:30px;margin:12px 0;line-height:1.15}
+.hero p{color:#aaa;font-size:13px;line-height:1.6}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:22px 0 13px;gap:8px}
+.section-title h2{font-size:17px}.section-title span{color:var(--red);font-size:10px}
+input,select{width:100%;background:var(--panel);color:white;border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:12px;outline:none;font-size:14px}
+input:focus,select:focus{border-color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:14px;cursor:pointer}
+.card:active{transform:scale(.98)}
+.card h3{font-size:14px;margin-bottom:7px}.card p{color:var(--muted);font-size:12px;line-height:1.5}
+.card small{display:block;color:var(--red);margin-top:10px;font-size:10px}
+.panel,.guide{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:13px}
+.panel h3,.guide h3{font-size:16px;margin-bottom:12px}
+.panel p,.guide p{color:#aaa;font-size:13px;line-height:1.7}
+.btn{width:100%;border:0;background:var(--red);color:white;font-weight:bold;padding:14px;border-radius:10px;margin-top:10px;cursor:pointer}
+.btn.secondary{background:var(--panel2);border:1px solid var(--border)}
+.weapon-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.weapon{padding:13px;background:var(--panel);border:1px solid var(--border);border-radius:10px;color:white;text-align:left;cursor:pointer}
+.weapon.active{border-color:var(--red);background:#291313}
+.weapon small{display:block;color:#888;font-size:10px;margin-top:5px}
+.slot{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.5}
+.slot:last-child{border-bottom:0}.slot span:first-child{color:#999;min-width:65px}.slot span:last-child{text-align:right;color:#ff7777}
+.notice{background:#241b0d;border:1px solid #5d4219;color:#e7c98d;padding:12px;border-radius:10px;font-size:12px;line-height:1.6;margin-bottom:13px}
+.hidden{display:none!important}
+.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:8px}
+.pill{white-space:nowrap;border:1px solid var(--border);background:var(--panel);color:#aaa;padding:10px 13px;border-radius:30px;font-size:12px}
+.pill.active{background:#351313;border-color:var(--red);color:white}
+.tip-number{font-size:11px;color:var(--red);font-weight:bold;margin-bottom:8px}
+.tip-card{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:15px;margin-bottom:10px}
+.tip-card h3{font-size:14px;margin-bottom:8px}
+.tip-card p{font-size:13px;color:#aaa;line-height:1.7}
+.map-tag{display:inline-block;font-size:10px;color:#ff7777;background:#291313;padding:5px 8px;border-radius:20px;margin-bottom:10px}
+.map-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.map-choice{background:var(--panel);border:1px solid var(--border);border-radius:10px;color:white;padding:12px;text-align:left;font-size:12px}
+.map-choice.active{border-color:var(--red);background:#291313}
+.map-choice small{display:block;color:#888;margin-top:5px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 2px calc(10px + env(safe-area-inset-bottom));z-index:20}
+nav button{border:0;background:transparent;color:#777;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:5px}
+nav button.active{color:var(--red)}nav .icon{font-size:19px}
+footer{text-align:center;color:#555;font-size:11px;padding:20px}
+.status{font-size:12px;color:#aaa;line-height:1.7;margin-top:10px}
+@media(min-width:600px){.grid,.weapon-list,.map-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header><div class="logo">CODM <span>TACTICAL HUB</span></div></header>
+<main>
+
+<section id="home" class="page">
+<div class="hero">
+<small>COMPETITIVE INTELLIGENCE</small>
+<h1>Play Smarter.<br>Rank Higher.</h1>
+<p>Master weapons, dominate maps, improve your aim and become a smarter CODM player.</p>
+</div>
+<div class="section-title"><h2>Combat Intelligence</h2><span>TACTICAL DATABASE</span></div>
+<div class="grid">
+<div class="card" onclick="showPage('loadouts')"><h3>🔫 Weapon Loadouts</h3><p>Browse weapons and build your Gunsmith setup.</p><small>WEAPON DATABASE</small></div>
+<div class="card" onclick="showPage('maps')"><h3>🗺️ All Maps</h3><p>Multiplayer and Battle Royale map guides.</p><small>MAP CONTROL</small></div>
+<div class="card" onclick="showPage('tips')"><h3>💡 Player Tips</h3><p>Explore tips for beginners and experienced players.</p><small>SKILL LIBRARY</small></div>
+<div class="card" onclick="showPage('snd')"><h3>💣 Search & Destroy</h3><p>Improve attacks and defensive setups.</p><small>TACTICAL PLAYBOOK</small></div>
+<div class="card" onclick="showPage('mechanics')"><h3>⚡ Mechanics</h3><p>Movement, perks, scorestreaks and gunfights.</p><small>SKILL DEVELOPMENT</small></div>
+<div class="card" onclick="showPage('updates')"><h3>🔄 App Updates</h3><p>Check the latest version of Tactical Hub.</p><small>VERSION CONTROL</small></div>
+</div>
+<div class="section-title"><h2>Quick Tactical Advice</h2></div>
+<div class="panel"><h3>🎯 Win More Gunfights</h3><p><b>Pre-aim:</b> Keep your crosshair at enemy chest or head level before entering an angle.<br><br><b>Use cover:</b> Avoid fighting several enemies in the open.<br><br><b>Reset:</b> After a kill, reposition instead of repeating the same angle.</p></div>
+</section>
+
+<section id="loadouts" class="page hidden">
+<div class="section-title"><h2>Weapon Database</h2><span id="weaponCount">0 WEAPONS</span></div>
+<input id="weaponSearch" placeholder="Search any weapon..." oninput="renderWeapons()">
+<select id="category" onchange="renderWeapons()">
+<option value="All">All Weapon Categories</option>
+<option>Assault Rifle</option><option>SMG</option><option>LMG</option><option>Sniper Rifle</option><option>Marksman Rifle</option><option>Shotgun</option><option>Pistol</option><option>Melee</option><option>Launcher</option>
+</select>
+<div id="weaponList" class="weapon-list"></div>
+<div class="section-title"><h2 id="selectedTitle">Select a Weapon</h2><span>GUNSMITH</span></div>
+<div class="notice">Sample loadout builder. Verify exact attachment names and availability in your current in-game Gunsmith.</div>
+<select id="playstyle" onchange="updateBuild()">
+<option value="balanced">Balanced / Ranked</option><option value="range">Long Range</option><option value="aggressive">Aggressive / Fast ADS</option>
+</select>
+<div class="panel"><h3 id="buildTitle">Your Loadout</h3><div id="buildSlots"></div><button class="btn" onclick="copyBuild()">COPY LOADOUT</button></div>
+<div class="panel"><h3>Build Explanation</h3><p id="buildReason">Select a weapon to view its loadout.</p></div>
+</section>
+
+<section id="maps" class="page hidden">
+<div class="section-title"><h2>Complete Map Guide</h2><span>MP + BR</span></div>
+<div class="pills">
+<button class="pill active" id="mpTab" onclick="setMapMode('mp')">MULTIPLAYER</button>
+<button class="pill" id="brTab" onclick="setMapMode('br')">BATTLE ROYALE</button>
+</div>
+<div id="mpMaps">
+<input id="mpSearch" placeholder="Search Multiplayer maps..." oninput="renderMapChoices()">
+<div class="notice">This database includes classic and newer CODM Multiplayer maps. Actual availability depends on the current playlist and season.</div>
+<div id="mpMapList" class="map-list"></div>
+<div id="mpMapContent"></div>
+</div>
+<div id="brMaps" class="hidden">
+<select id="brMapSelect" onchange="updateBRMap()">
+<option value="Isolated">Isolated</option><option value="Blackout">Blackout</option><option value="Krai">Krai</option><option value="Rebirth Island">Rebirth Island</option>
+</select>
+<div id="brMapContent"></div>
+</div>
+</section>
+
+<section id="tips" class="page hidden">
+<div class="section-title"><h2>Player Tips Library</h2><span id="tipCount">60+ TIPS</span></div>
+<input id="tipSearch" placeholder="Search tips..." oninput="renderTips()">
+<select id="tipCategory" onchange="renderTips()">
+<option value="All">All tip categories</option>
+<option>Aim & Gunfights</option><option>Movement</option><option>Ranked MP</option><option>Search & Destroy</option><option>Battle Royale</option><option>Map Awareness</option><option>Teamwork</option><option>Beginner</option><option>Advanced</option>
+</select>
+<button class="btn" onclick="randomTip()">🎲 GIVE ME A RANDOM TIP</button>
+<div id="randomTipBox"></div>
+<div class="section-title"><h2>All Player Tips</h2><span>LEARN & IMPROVE</span></div>
+<div id="tipList"></div>
+</section>
+
+<section id="snd" class="page hidden">
+<div class="section-title"><h2>Search & Destroy</h2><span>TACTICAL PLAYBOOK</span></div>
+<div class="guide"><h3>💣 Attacking</h3><p>1. Identify the weaker bomb site using early information.<br><br>2. Use smokes to block long sightlines and flashes to clear close angles.<br><br>3. Enter together. The first player clears while the second player trades.<br><br>4. Plant only when teammates can protect the site.<br><br>5. Spread into crossfires after planting.</p></div>
+<div class="guide"><h3>🛡️ Defending</h3><p>1. Establish safe early positions.<br><br>2. Use Trophy Systems against incoming explosives.<br><br>3. Avoid unnecessary early challenges.<br><br>4. Rotate when reliable information confirms pressure on the opposite site.<br><br>5. Play the bomb timer and coordinate your retake.</p></div>
+</section>
+
+<section id="mechanics" class="page hidden">
+<div class="section-title"><h2>Competitive Mechanics</h2><span>ADVANCED</span></div>
+<div class="guide"><h3>⚡ Slide-Canceling</h3><p>Sprint toward your target, slide into cover, then cancel the slide using your movement controls and layout. Re-center your crosshair before firing. Practice the timing in the training range.</p></div>
+<div class="guide"><h3>🎯 Dropshotting</h3><p>Start firing, then activate crouch or prone while maintaining aim. Track the enemy through the movement. Use it selectively so you remain unpredictable.</p></div>
+<div class="guide"><h3>🏆 Scorestreaks</h3><p><b>UAV:</b> Team information.<br><b>Counter-UAV:</b> Disrupt enemy information.<br><b>Predator Missile:</b> Punish grouped enemies.<br><b>Advanced UAV:</b> Strong information advantage.<br><br>Choose streaks you can consistently earn.</p></div>
+<div class="guide"><h3>🎮 HUD & Controls</h3><p>Use a layout that lets you aim, fire, slide, jump and crouch without losing control of your movement. Change one control at a time and practise before ranked matches.</p></div>
+</section>
+
+<section id="updates" class="page hidden">
+<div class="section-title"><h2>App Update Centre</h2><span>ONLINE UPDATE</span></div>
+<div class="panel">
+<h3>CODM Tactical Hub</h3>
+<p>Installed version: <b id="currentVersion">1.0.0</b></p>
+<p id="updateStatus" class="status">Connect the app to its online update manifest after publishing it on GitHub Pages.</p>
+<button class="btn" onclick="checkForUpdates()">CHECK FOR UPDATES</button>
+<button class="btn secondary" onclick="location.reload()">REFRESH APP</button>
+</div>
+<div class="notice">Online update checking will become active after the app and its version.json file are published to your GitHub Pages website. A newer app version is installed by publishing the new index.html and refreshing the website.</div>
+<div class="panel"><h3>Update History</h3><p><b>Version 1.0.0</b><br>Initial Tactical Hub release with weapon database, map guides, BR guides and player tips.</p></div>
+</section>
+
+<footer>CODM TACTICAL HUB<br><br>Unofficial fan-made companion. Not affiliated with Activision.</footer>
+</main>
+
+<nav>
+<button class="active" onclick="showPage('home',this)"><span class="icon">⌂</span>Home</button>
+<button onclick="showPage('loadouts',this)"><span class="icon">🔫</span>Weapons</button>
+<button onclick="showPage('maps',this)"><span class="icon">🗺️</span>Maps</button>
+<button onclick="showPage('tips',this)"><span class="icon">💡</span>Tips</button>
+<button onclick="showPage('updates',this)"><span class="icon">🔄</span>Updates</button>
+</nav>
+
+<script>
+const APP_VERSION="1.0.0";
+// After creating your GitHub repository, replace this placeholder
+// with the raw URL of your version.json file.
+const UPDATE_MANIFEST_URL="YOUR_GITHUB_VERSION_JSON_RAW_URL";
+
+const database={
+"Assault Rifle":`AK117|AK-47|M4|Type 25|ASM10|BK57|LK24|M16|ICR-1|Man-O-War|HBRa3|KN-44|HVK-30|DR-H|Peacekeeper MK2|FR .556|AS VAL|CR-56 AMAX|M13|Swordfish|Kilo 141|Oden|Krig 6|EM2|Maddox|FFAR 1|Grau 5.56|Groza|Type 19|BP50|LAG 53|XM4|Vargo-S|RAM-7|Lachmann-556|BAL-27|Grav|Cronen Squall|ISO Hemlock`,
+"SMG":`RUS-79U|PDW-57|HG 40|Chicom|MSMC|Razorback|Pharo|GKS|Cordite|QQ9|Fennec|AGR 556|QXR|PP19 Bizon|MX9|CBR4|PPSh-41|MAC-10|KSP 45|Switchblade X9|LAPA|OTs 9|Striker 45|CX-9|TEC-9|ISO|USS 9|VMP|Sten|LC10|FSS Hurricane|MicroMG 9mm`,
+"LMG":`RPD|M4LMG|UL736|S36|Chopper|Holger 26|Hades|PKM|Dingo|Bruen MK9|MG42|RAAL MG|MG 82|DP27`,
+"Sniper Rifle":`DL Q33|M21 EBR|Arctic .50|XPR-50|Locus|Outlaw|NA-45|Rytec AMR|SVD|Koshka|ZRG 20mm|HDR|LW3-Tundra|3-Line Rifle`,
+"Marksman Rifle":`Kilo Bolt-Action|SKS|SP-R 208|MK2|Type 63|M1 Garand|SO-14`,
+"Shotgun":`BY15|Striker|HS2126|HS0405|KRM-262|Echo|R9-0|JAK-12|Argus|VLK Rogue|Einhorn Revolving|MX Guardian`,
+"Pistol":`MW11|J358|.50 GS|Renetti|Shorty|Crossbow|L-CAR 9|Dobvra|Nail Gun|Machine Pistol`,
+"Melee":`Base Melee|Knife|Axe|Baseball Bat|Katana|Shovel|Sickle|Wrench|Machete|Prizefighters|Nunchucks|Kali Sticks|Butterfly Knife|Sai|Ballistic Knife|Spear|Karambit|Ice Axe|Assault Knife|Sword|Stun Baton|Scythe|Sledgehammer|Spiked Bat`,
+"Launcher":`SMRS|FHJ-18|Thumper|D13 Sector`
+};
+const weapons=[];
+Object.entries(database).forEach(([category,list])=>list.split("|").map(x=>x.trim()).filter(Boolean).forEach(name=>weapons.push({name,category})));
+let selected=null;
+function renderWeapons(){
+const q=document.getElementById("weaponSearch").value.toLowerCase(),cat=document.getElementById("category").value;
+const filtered=weapons.filter(w=>w.name.toLowerCase().includes(q)&&(cat==="All"||w.category===cat));
+document.getElementById("weaponCount").textContent=filtered.length+" WEAPONS";
+document.getElementById("weaponList").innerHTML=filtered.map(w=>`<button class="weapon ${selected&&selected.name===w.name?"active":""}" onclick="selectWeapon('${w.name.replace(/'/g,"\\'")}')">${w.name}<small>${w.category}</small></button>`).join("")||'<div class="panel">No weapons found.</div>';
+}
+function selectWeapon(name){selected=weapons.find(w=>w.name===name);document.getElementById("selectedTitle").textContent=selected.name;updateBuild();renderWeapons()}
+const templates={balanced:["Muzzle / Suppressor","Barrel","Laser / Handling","Magazine","Rear Grip / Stock"],range:["Range Muzzle","Long-Range Barrel","Recoil Control","Magazine","Accuracy Grip / Stock"],aggressive:["Lightweight Muzzle","Mobility Barrel","ADS Laser","Extended Magazine","ADS Grip / Stock"]};
+const reasons={balanced:"Balanced builds combine recoil control, magazine capacity and handling. Check the exact attachments available for this weapon.",range:"Range builds prioritize accuracy and predictable long-range engagements. Handling may be slower.",aggressive:"Aggressive builds prioritize ADS speed, mobility and close-range responsiveness."};
+function updateBuild(){if(!selected)return;const style=document.getElementById("playstyle").value;document.getElementById("buildTitle").textContent=selected.name+" - "+style.toUpperCase();document.getElementById("buildSlots").innerHTML=templates[style].map((slot,i)=>`<div class="slot"><span>Slot ${i+1}</span><span>${slot}</span></div>`).join("");document.getElementById("buildReason").textContent=reasons[style]}
+function copyBuild(){if(!selected){alert("Select a weapon first.");return}const style=document.getElementById("playstyle").value;const txt=selected.name+" - "+style+"\n\n"+templates[style].map((x,i)=>(i+1)+". "+x).join("\n");if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>alert("Loadout copied!")).catch(()=>prompt("Copy your loadout:",txt));else prompt("Copy your loadout:",txt)}
+
+// MULTIPLAYER MAP DATABASE
+const mpMaps=`Shipment|Nuketown|Raid|Standoff|Firing Range|Crash|Crossfire|Hijacked|Takeoff|Summit|Scrapyard|Cage|Meltdown|Rust|Saloon|Tunisia|Highrise|Terminal|Pine|King|Hackney Yard|Reclaim|Shoot House|Oasis|Coastal|Dome|Suldal Harbor|Docks|Aniyah Incursion|Slums|Stack|Monastery|Hovec Sawmill|Vacant|Icebreaker|Hacienda|Hardhat|Miami Strike|Satellite|Khandor Hideout|Apocalypse|Favela|Express|Crossroads Strike|Crossroads|Diesel|Rush|Arsenal|Armada Strike|Armada|Seaside|Kurohana Metropolis|Memnos Island|Miami Blitz|Atrium|Cheshire Park|Frequency|Collateral Strike|Collateral|Combine|Chase|Infinite Shift|Zoo|Space Transfer Platform|Shipment: Year of the Horse|Nuketown Russia|Nuketown Temple|Nuk3town Year of the Dragon|Shipment 1944|Scrapyard 2019|Winter Raid|Standoff Halloween|Haunted Hacienda`;
+const mpMapArray=mpMaps.split("|").map(x=>x.trim());
+let chosenMP="Shipment";
+function setMapMode(mode){document.getElementById("mpMaps").classList.toggle("hidden",mode!=="mp");document.getElementById("brMaps").classList.toggle("hidden",mode!=="br");document.getElementById("mpTab").classList.toggle("active",mode==="mp");document.getElementById("brTab").classList.toggle("active",mode==="br")}
+function renderMapChoices(){const q=document.getElementById("mpSearch").value.toLowerCase();const list=mpMapArray.filter(x=>x.toLowerCase().includes(q));document.getElementById("mpMapList").innerHTML=list.map(x=>`<button class="map-choice ${chosenMP===x?"active":""}" onclick="chooseMP('${x.replace(/'/g,"\\'")}')">${x}<small>Multiplayer map</small></button>`).join("")||'<div class="panel">No map found.</div>'}
+function chooseMP(name){chosenMP=name;renderMapChoices();updateMPMap()}
+function updateMPMap(){const n=chosenMP;const fast=["Shipment","Nuketown","Killhouse","Rust","Shoot House","Saloon","Cage","Pine","King","Stack","Atrium"].some(x=>n.includes(x));const long=["Crossfire","Terminal","Highrise","Satellite","Icebreaker","Collateral"].some(x=>n.includes(x));let tips=fast?["Expect frequent close-range engagements. Keep your weapon ready before entering tight lanes.","Use cover and avoid standing still in open sightlines.","Watch enemy spawn pressure and avoid pushing alone."]:long?["Avoid crossing long sightlines without cover or smoke.","Use a teammate to watch a second angle while you reposition.","Do not challenge a sniper repeatedly from the same position."]:["Learn the main lanes and routes between objectives.","Use cover when crossing open areas and pre-aim common entry points.","Control useful power positions without staying exposed too long.","After a kill, reposition so enemies cannot predict your next angle."];document.getElementById("mpMapContent").innerHTML=`<div class="panel"><span class="map-tag">MULTIPLAYER MAP</span><h3>${n} — Tactical Plan</h3>${tips.map((t,i)=>`<div class="slot"><span>TIP ${i+1}</span><span>${t}</span></div>`).join("")}<p style="margin-top:12px">Mode advice: In Hardpoint and Domination, prioritize objective control. In Team Deathmatch, protect your life and avoid feeding enemy streaks. In Search & Destroy, use information and coordinated pushes.</p></div>`}
+
+// BATTLE ROYALE MAPS
+const brData={
+"Isolated":{style:"Large-scale BR",areas:["Farm","Nuketown","Launch Base","Black Market","Sakura","Crash","Sanitarium","Downtown","Pipeline","Dock","Estate","Outpost","Frigid Wetland","Ecology Lab","T-3 Refinery"],tips:["Choose a landing area based on the flight path and how many squads are dropping nearby.","Loot quickly: secure a reliable primary weapon, armour and healing supplies before chasing extra gear.","Use vehicles for long rotations, but leave them before entering the final safe zone if they reveal your position.","Rotate early when the safe zone is far away. Use terrain and buildings for cover.","Avoid crossing open ground late in the match. Move between rocks, ridges and structures.","Keep track of the safe-zone timer and plan your next position before the circle closes."]},
+"Blackout":{style:"Large-scale BR",areas:["Array","Asylum","Cargo Docks","Construction Site","Estates","Factory","Firing Range","Fracking Tower","Ghost Town","Hydro Dam","Lighthouse","Nuketown Island","Rivertown","Train Station","Turbine"],tips:["Check the flight path before selecting a landing area; popular named locations can attract several squads.","Loot buildings efficiently and listen for nearby footsteps before opening another fight.","Use hills, buildings and terrain to avoid exposingyourself during rotations.","Cross rivers and open areas carefully; check for enemies holding the opposite side.","Do not stay looting after your squad has enough equipment. Rotate toward a useful safe-zone position.","In the final circles, use cover and team spacing instead of sprinting together in one exposed line."]},
+"Krai":{style:"Compact urban BR",areas:["Tranquility Parish","Principia Sanatorium","Knight Station","Thistledown Village Industrial Park","Safari Land Animal Play Park"],tips:["Expect more frequent encounters because the playable area is more compact.","Check rooftops, windows and building entrances before pushing into urban locations.","Use buildings and hard cover to move between areas instead of crossing open streets.","Keep your squad close enough to trade, but not so close that one grenade catches everyone.","Listen carefully for footsteps and gunfire; sound gives important information in urban fights.","Plan rotations early and avoid getting trapped between teams and the shrinking zone."]},
+"Rebirth Island":{style:"Small, fast-paced BR",areas:["Prison","Control Center","Harbor","Chemical Engineering","Bioweapons","Stronghold","Living Quarters","Factory"],tips:["Expect fast engagements and frequent squad encounters in this compact map.","Choose a landing area with a clear escape route if another squad arrives first.","Secure a weapon immediately and avoid looting one building for too long.","Use rooftops and interior cover carefully; check windows and stairwells before pushing.","Stay close enough to teammates to support a fight and trade eliminations.","When redeploy mechanics are available, protect surviving teammates and avoid unnecessary solo pushes."]}
+};
+function updateBRMap(){const name=document.getElementById("brMapSelect").value,d=brData[name];document.getElementById("brMapContent").innerHTML=`<div class="panel"><span class="map-tag">${d.style.toUpperCase()}</span><h3>${name} — BattleRoyale Guide</h3><p><b>Named locations and areas:</b><br>${d.areas.join(" • ")}</p><br><h3>Survival & Rotation Tips</h3>${d.tips.map((t,i)=>`<div class="slot"><span>TIP ${i+1}</span><span>${t}</span></div>`).join("")}</div>`}
+
+// PLAYER TIPS LIBRARY
+const tips=[
+["Aim & Gunfights","Keep your crosshair at upper-chest height before entering a room."],
+["Aim & Gunfights","Pre-aim common enemy positions instead of aiming only after seeing an opponent."],
+["Aim & Gunfights","Use short controlled bursts at long range when recoil becomes difficult to manage."],
+["Aim & Gunfights","Do not stand still while fighting. Strafe while keeping your aim on target."],
+["Aim & Gunfights","Learn the recoil pattern of your favourite weapon in the training range."],
+["Aim & Gunfights","Avoid reloading immediately after every elimination if an enemy may be nearby."],
+["Aim & Gunfights","Use cover to break enemy line of sight before healing or reloading."],
+["Aim & Gunfights","Do not challenge a sniper in the same lane repeatedly."],
+["Movement","Slide toward cover rather than sliding into the middle of an open lane."],
+["Movement","Practise slide-jumping and turning in the training range before ranked matches."],
+["Movement","Do not jump constantly. Unnecessary movement can make your aim less consistent."],
+["Movement","Use crouch and dropshot selectively; predictable movement is easy to counter."],
+["Movement","Keep your movement controls comfortable and avoid changing your HUD every match."],
+["Movement","Learn when to sprint and when to walk so you do not reveal your approach unnecessarily."],
+["Ranked MP","Play the objective in Hardpoint and Domination instead of chasing every kill."],
+["Ranked MP","Watch the minimap after teammates are eliminated to understand possible enemy positions."],
+["Ranked MP","If your team controls the objective, defend useful entrances instead of leaving to chase kills."],
+["Ranked MP","Avoid giving the enemy team easy scorestreak points through repeated careless deaths."],["Ranked MP","Use scorestreaks when they can help your team, not only when you are frustrated."],
+["Ranked MP","If one route is heavily defended, coordinate a different approach with your team."],
+["Search & Destroy","Do not rush the bomb site alone without information or teammate support."],
+["Search & Destroy","Use utility to clear dangerous corners before entering a room."],
+["Search & Destroy","After planting, move into positions that protect the bomb from different angles."],
+["Search & Destroy","When defending, stay alive and avoid unnecessary early challenges."],
+["Search & Destroy","Listen for footsteps and reload sounds to gather information."],
+["Search & Destroy","If you have the numbers advantage, avoid giving opponents isolated one-on-one fights."],
+["Battle Royale","Choose a landing area based on the flight path and the number of nearby squads."],
+["Battle Royale","Secure a weapon before searching for perfect attachments."],
+["Battle Royale","Carry enough ammunition and healing items for the fights you expect."],
+["Battle Royale","Rotate before the safe zone forces you to cross open ground."],
+["Battle Royale","Use vehicles for long rotations, but consider leaving them before the final circle."],
+["Battle Royale","Avoid shooting every distant enemy if the fight exposes your squad to another team."],
+["Battle Royale","Keep track of the safe-zone timer and your next route."],
+["Battle Royale","Use high ground when it offers cover and a safe way to reposition."],
+["Map Awareness","Your minimap is an information tool. Check it regularly."],
+["Map Awareness","Learn common routes between objectives on maps you play often."],
+["Map Awareness","Remember where enemies were last seen, but do not assume they stayed there."],
+["Map Awareness","Use cover when crossing lanes and avoid predictable routes."],["Map Awareness","After being eliminated, think about the angle that defeated you and change your approach."],
+["Map Awareness","Learn where power positions are located on your favourite maps."],
+["Teamwork","Stay close enough to teammates to trade kills when pushing together."],
+["Teamwork","Share enemy positions using clear and short callouts."],
+["Teamwork","Do not all rush through the same doorway when another angle is available."],
+["Teamwork","Support teammates who are playing the objective."],
+["Teamwork","If a teammate is fighting, look for a safe way to support rather than rushing blindly."],
+["Beginner","Start with one or two weapons and learn their recoil before switching constantly."],
+["Beginner","Use the training range to test sensitivity and weapon handling."],
+["Beginner","Choose a comfortable control layout before trying advanced movement techniques."],
+["Beginner","Do not judge your improvement from one bad match."],
+["Beginner","Review your mistakes after a match instead of blaming every loss on teammates."],
+["Beginner","Learn the objective rules of each game mode before entering ranked."],
+["Advanced","Control one angle while your teammate watches another to create crossfires."],
+["Advanced","Change your position after revealing yourself to enemies."],
+["Advanced","Use sound, minimap information and teammate callouts together."],
+["Advanced","Manage your ammunition before starting a fight when possible."],
+["Advanced","Learn when to disengage. Surviving can be more valuable than forcing a bad fight."],
+["Advanced","Predict enemy rotations from objective timing and the safe-zone movement."],
+["Advanced","Use utility to create space for a push or to delay an enemy advance."],
+["Advanced","Avoid repeating the same timing and route because good opponents adapt."]
+];
+function renderTips(){const q=document.getElementById("tipSearch").value.toLowerCase(),cat=document.getElementById("tipCategory").value;const list=tips.filter(t=>(cat==="All"||t[0]===cat)&&(t[0]+" "+t[1]).toLowerCase().includes(q));document.getElementById("tipCount").textContent=list.length+"TIPS";document.getElementById("tipList").innerHTML=list.map((t,i)=>`<div class="tip-card"><div class="tip-number">${t[0].toUpperCase()} • TIP ${i+1}</div><h3>${t[1]}</h3></div>`).join("")||'<div class="panel">No tips found. Try another search.</div>'}
+function randomTip(){const t=tips[Math.floor(Math.random()*tips.length)];document.getElementById("randomTipBox").innerHTML=`<div class="tip-card"><div class="tip-number">🎲 RANDOM TIP • ${t[0].toUpperCase()}</div><h3>${t[1]}</h3></div>`}
+
+// ONLINE UPDATE CHECKER
+async function checkForUpdates(){
+const status=document.getElementById("updateStatus");
+if(UPDATE_MANIFEST_URL==="YOUR_GITHUB_VERSION_JSON_RAW_URL"){status.textContent="Not connected yet. First publish the app and version.json on GitHub Pages, then add your manifest URL in the code.";return}
+status.textContent="Checking for updates...";
+try{
+const response=await fetch(UPDATE_MANIFEST_URL+"?t="+Date.now(),{cache:"no-store"});
+if(!response.ok)throw new Error("Could not reach update server.");
+const data=await response.json();
+if(!data.version)throw new Error("The version file is missing its version number.");
+if(data.version!==APP_VERSION){
+status.innerHTML="A newer version is available: <b>"+data.version+"</b><br>"+(data.notes||"New improvements are available.")+"<br><br>Refresh the app website to load the latest release.";
+}else{status.textContent="You are using the latest version: "+APP_VERSION+"."}
+}catch(error){status.textContent="Update check failed. Check your internet connection and GitHub update settings. "+error.message}
+}
+
+// NAVIGATION
+function showPage(id,button){
+document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+document.getElementById(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+if(button)button.classList.add("active");
+else{const ids=["home","loadouts","maps","tips","updates"];const i=ids.indexOf(id);if(i>=0)document.querySelectorAll("nav button")[i].classList.add("active")}
+window.scrollTo({top:0,behavior:"smooth"});
+}
+renderWeapons();renderMapChoices();updateMPMap();updateBRMap();renderTips();
+document.getElementById("currentVersion").textContent=APP_VERSION;
+</script>
+</body>
+</html>
