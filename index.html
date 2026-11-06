@@ -311,5 +311,15 @@ window.scrollTo({top:0,behavior:"smooth"});
 renderWeapons();renderMapChoices();updateMPMap();updateBRMap();renderTips();
 document.getElementById("currentVersion").textContent=APP_VERSION;
 </script>
+  
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("CODM Hub offline support activated"))
+      .catch(error => console.error("Service Worker error:", error));
+  });
+}
+</script>
 </body>
 </html>
